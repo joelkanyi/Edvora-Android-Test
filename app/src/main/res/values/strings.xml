@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">EdvoraAndroidTest</string>
+    <string name="date">Date:</string>
+    <string name="clear_filter">Clear filter</string>
+    <string name="filters">Filters</string>
 
     <string-array name="test">
         <item>Test 1</item>

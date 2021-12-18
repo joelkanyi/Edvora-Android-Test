@@ -5,11 +5,13 @@
       <map>
         <entry key="app/src/main/res/drawable/clear_filter_background.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_caret_down.xml" value="0.1824074074074074" />
+        <entry key="app/src/main/res/drawable/ic_currency_dollar.xml" value="0.15833333333333333" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.1824074074074074" />
+        <entry key="app/src/main/res/drawable/ic_money.xml" value="0.2638888888888889" />
         <entry key="app/src/main/res/drawable/recyclers_background.xml" value="0.1824074074074074" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="app/src/main/res/layout/all_products_recycler_row.xml" value="0.26197916666666665" />
-        <entry key="app/src/main/res/layout/item_row.xml" value="0.26197916666666665" />
+        <entry key="app/src/main/res/layout/item_row.xml" value="0.5" />
         <entry key="app/src/main/res/layout/spinner.xml" value="0.26197916666666665" />
         <entry key="app/src/main/res/menu/filter_menu.xml" value="0.25" />
       </map>

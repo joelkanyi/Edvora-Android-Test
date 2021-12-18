@@ -5,10 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/main_dark"
-    tools:context=".MainActivity">
+    tools:context=".ui.MainActivity">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBar_movies"
+        android:id="@+id/appBar_products"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/main_dark"
@@ -21,7 +21,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/appBar_movies">
+            app:layout_constraintTop_toTopOf="@id/appBar_products">
 
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/toolbar_products"
@@ -41,7 +41,7 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="16dp"
                 android:background="@drawable/clear_filter_background"
-                android:text="Clear filter"
+                android:text="@string/clear_filter"
                 android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/toolbar_products"
@@ -55,32 +55,42 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
                 android:background="@drawable/clear_filter_background"
-                android:drawableRight="@drawable/ic_caret_down"
                 android:drawablePadding="60dp"
-                android:text="Filters"
+                android:text="@string/filters"
                 android:textColor="@color/white"
                 android:textSize="18sp"
+                app:drawableRightCompat="@drawable/ic_caret_down"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/toolbar_products" />
-
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/all_products_recycler"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/all_products_recycler_row"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appBar_movies" />
+        app:layout_constraintTop_toBottomOf="@+id/appBar_products"
+        tools:listitem="@layout/all_products_recycler_row" />
 
+    <ProgressBar
+        android:id="@+id/productsProgressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminateTint="#ef3e36"
+        android:indeterminateTintMode="src_in"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-
-<!--?attr/actionBarSize-->
