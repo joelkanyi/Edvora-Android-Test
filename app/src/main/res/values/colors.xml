@@ -12,4 +12,5 @@
     <color name="recycler_back">#131313</color>
     <color name="divider_color">#CBCBCB</color>
     <color name="white_variant">#bababa</color>
+    <color name="red">#ef3e36</color>
 </resources>

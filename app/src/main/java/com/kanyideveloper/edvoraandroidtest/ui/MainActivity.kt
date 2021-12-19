@@ -9,6 +9,11 @@ import com.kanyideveloper.edvoraandroidtest.databinding.ActivityMainBinding
 import com.kanyideveloper.edvoraandroidtest.util.Resource
 import com.kanyideveloper.edvoraandroidtest.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import android.view.View
+
+import androidx.core.content.ContextCompat
+import com.kanyideveloper.edvoraandroidtest.R
+
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -23,7 +28,21 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        window.statusBarColor = ContextCompat.getColor(this@MainActivity, R.color.main_dark)
+
+        // set status background black
+        val decorView: View = window.decorView
+
+        //set status text  light
+        decorView.systemUiVisibility =
+            decorView.systemUiVisibility and View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv()
+
         setUpObserver()
+
+        binding.filters.setOnClickListener {
+            binding.filterCard.isVisible = !binding.filterCard.isVisible
+        }
     }
 
     private fun setUpObserver() {
