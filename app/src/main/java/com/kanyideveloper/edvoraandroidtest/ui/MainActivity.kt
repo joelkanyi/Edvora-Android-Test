@@ -42,8 +42,20 @@ class MainActivity : AppCompatActivity() {
         // Invoke the observer
         setUpObserver()
 
+        // Swipe to Refresh
+        binding.swipeLayout.setOnRefreshListener {
+            viewModel.getAllProducts()
+        }
+
+        // Apply Filter
         binding.filters.setOnClickListener {
             binding.filterCard.isVisible = !binding.filterCard.isVisible
+        }
+
+        // Clear Filter
+        binding.textViewClearFilter.setOnClickListener {
+            viewModel.clearFilter()
+            binding.filterCard.isVisible = false
         }
 
         // Products Spinner
@@ -78,9 +90,32 @@ class MainActivity : AppCompatActivity() {
         binding.statesSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                 viewModel.citiesSpinner(binding.statesSpinner.selectedItem.toString())
-                binding.filterCard.isVisible = false
+                if (binding.statesSpinner.selectedItem.toString() != "States") {
+                    binding.filterCard.isVisible = false
+                }
+            }
+            override fun onNothingSelected(p0: AdapterView<*>?) {}
+        }
+
+
+        // Filter Products
+        binding.productsSpinner.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                    viewModel.filterProducts(binding.productsSpinner.selectedItem.toString())
+                    if (binding.productsSpinner.selectedItem.toString() != "Products") {
+                        binding.filterCard.isVisible = false
+                    }
+                }
+                override fun onNothingSelected(p0: AdapterView<*>?) {}
             }
 
+        binding.citiesSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                if (binding.citiesSpinner.selectedItem.toString() != "City") {
+                    binding.filterCard.isVisible = false
+                }
+            }
             override fun onNothingSelected(p0: AdapterView<*>?) {}
         }
     }
@@ -90,9 +125,20 @@ class MainActivity : AppCompatActivity() {
             when (result) {
                 is Resource.Success -> {
                     binding.productsProgressBar.isVisible = false
+                    binding.swipeLayout.isRefreshing = false
+                    binding.imageViewMessage.isVisible = false
+                    binding.textViewMessage.isVisible = false
+
+                    binding.allProductsRecycler.isVisible = true
 
                     if (result.data?.isEmpty()!!) {
-                        //showSnackbar("Nothing Found, Try Again!")
+                        binding.imageViewMessage.setImageResource(R.drawable.ic_empty_state)
+                        binding.textViewMessage.text = "Nothing Found!"
+                        binding.imageViewMessage.isVisible = true
+                        binding.textViewMessage.isVisible = true
+
+                        binding.allProductsRecycler.isVisible = false
+
                     } else {
                         allProductsAdapter.submitList(result.data)
                         binding.allProductsRecycler.adapter = allProductsAdapter
@@ -101,11 +147,18 @@ class MainActivity : AppCompatActivity() {
 
                 is Resource.Failure -> {
                     binding.productsProgressBar.isVisible = false
-                    //showSnackbar(result.message ?: "Unknown Error!")
+                    binding.swipeLayout.isRefreshing = false
+
+                    binding.imageViewMessage.setImageResource(R.drawable.ic_error)
+                    binding.textViewMessage.text = result.message
+                    binding.imageViewMessage.isVisible = true
+                    binding.textViewMessage.isVisible = true
                 }
 
                 is Resource.Loading -> {
                     binding.productsProgressBar.isVisible = true
+                    binding.imageViewMessage.isVisible = false
+                    binding.textViewMessage.isVisible = false
                 }
             }
         })

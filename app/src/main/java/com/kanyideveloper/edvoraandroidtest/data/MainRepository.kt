@@ -1,6 +1,5 @@
 package com.kanyideveloper.edvoraandroidtest.data
 
-import com.kanyideveloper.edvoraandroidtest.model.Address
 import com.kanyideveloper.edvoraandroidtest.model.CustomProduct
 import com.kanyideveloper.edvoraandroidtest.network.ApiService
 import com.kanyideveloper.edvoraandroidtest.util.Resource
@@ -12,25 +11,22 @@ import javax.inject.Inject
 
 class MainRepository @Inject constructor(private val apiService: ApiService) {
 
-    fun getProducts(): Flow<Resource<List<CustomProduct>>> = flow {
+    fun getProducts(): Flow<Resource<List<CustomProduct>?>> = flow {
 
         emit(Resource.Loading())
 
         try {
+
+            // Making the API Call
             val products = apiService.getProducts()
 
-            val addressesList = ArrayList<Address>()
-
-
-            products.forEach { product ->
-                addressesList.add(product.address)
-            }
-
+            // Grouping the products
             val groupedProductList = ArrayList<CustomProduct>()
             val groupedProducts = products.groupBy {
                 it.productName
             }
 
+            // Adding the grouped products into a list
             groupedProducts.forEach { product ->
                 groupedProductList.add(CustomProduct(product.key, product.value))
             }

@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.kanyideveloper.edvoraandroidtest.R
 import com.kanyideveloper.edvoraandroidtest.databinding.ItemRowBinding
 import com.kanyideveloper.edvoraandroidtest.model.Product
 import com.kanyideveloper.edvoraandroidtest.util.formatDate
@@ -39,6 +40,7 @@ class ProductsAdapter : ListAdapter<Product, ProductsAdapter.MyViewHolder>(PRODU
 
             Glide.with(binding.imageViewProduct)
                 .load(product.image)
+                .placeholder(R.drawable.image_placeholder)
                 .into(binding.imageViewProduct)
         }
     }
