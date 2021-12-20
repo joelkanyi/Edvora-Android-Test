@@ -8,8 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kanyideveloper.edvoraandroidtest.databinding.AllProductsRecyclerRowBinding
 import com.kanyideveloper.edvoraandroidtest.model.CustomProduct
 
-class AllProductsAdapter : ListAdapter<CustomProduct, AllProductsAdapter.MyViewHolder>(
-    PRODUCTS_COMPARATOR) {
+class AllProductsAdapter : ListAdapter<CustomProduct, AllProductsAdapter.MyViewHolder>(PRODUCTS_COMPARATOR) {
 
     companion object {
         private val PRODUCTS_COMPARATOR = object : DiffUtil.ItemCallback<CustomProduct>() {

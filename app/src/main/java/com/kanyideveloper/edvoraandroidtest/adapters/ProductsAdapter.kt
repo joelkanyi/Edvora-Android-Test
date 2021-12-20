@@ -11,9 +11,7 @@ import com.kanyideveloper.edvoraandroidtest.databinding.ItemRowBinding
 import com.kanyideveloper.edvoraandroidtest.model.Product
 import com.kanyideveloper.edvoraandroidtest.util.formatDate
 
-class ProductsAdapter : ListAdapter<Product, ProductsAdapter.MyViewHolder>(
-    PRODUCTS_COMPARATOR
-) {
+class ProductsAdapter : ListAdapter<Product, ProductsAdapter.MyViewHolder>(PRODUCTS_COMPARATOR) {
 
     companion object {
         private val PRODUCTS_COMPARATOR = object : DiffUtil.ItemCallback<Product>() {

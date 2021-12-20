@@ -3,92 +3,44 @@ package com.kanyideveloper.edvoraandroidtest.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.kanyideveloper.edvoraandroidtest.data.MainRepository
 import com.kanyideveloper.edvoraandroidtest.model.Address
 import com.kanyideveloper.edvoraandroidtest.model.CustomAddress
 import com.kanyideveloper.edvoraandroidtest.model.CustomProduct
 import com.kanyideveloper.edvoraandroidtest.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import retrofit2.HttpException
-import java.io.IOException
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(private val repository: MainRepository) : ViewModel() {
 
+    // List of All Products
     private val _prod = MutableLiveData<Resource<List<CustomProduct>>>()
     val prod: LiveData<Resource<List<CustomProduct>>> = _prod
 
+    // List of Products Names - Spinner Items
     private var _spinnerProducts = MutableLiveData<List<String>>()
     val spinnerProducts: LiveData<List<String>> = _spinnerProducts
 
+    // List of States Names - Spinner Items
     private val _spinnerStates = MutableLiveData<List<String>>()
     val spinnerStates: LiveData<List<String>> = _spinnerStates
 
+    // List of Cities Names - Spinner Items
+    private val _spinnerCities = MutableLiveData<List<String>>()
+    val spinnerCities: LiveData<List<String>> = _spinnerCities
+
+    // List of All Addresses
+    private val addresses = mutableListOf<Address>()
+
     init {
-        getProducts()
+        getAllProducts()
     }
 
-    private fun getProducts(): Flow<Resource<List<CustomProduct>>> = flow {
-
-        emit(Resource.Loading())
-
-        try {
-            val products = repository.getProducts()
-
-            val productsList = mutableListOf("Products")
-            val addressesList = mutableListOf<Address>()
-
-            products.forEach { product ->
-                productsList.add(product.productName)
-                addressesList.add(product.address)
-            }
-
-            _spinnerProducts.value = productsList.distinct()
-
-
-            // Grouping the addresses
-            val groupedAddressesList = ArrayList<CustomAddress>()
-            val groupedAddressesProducts = addressesList.groupBy {
-                it.state
-            }
-
-            val statesList = mutableListOf("States")
-            groupedAddressesProducts.forEach { product ->
-                groupedAddressesList.add(CustomAddress(product.key, product.value))
-            }
-
-
-
-
-            // Grouping the products
-            val groupedProductList = ArrayList<CustomProduct>()
-            val groupedProducts = products.groupBy {
-                it.productName
-            }
-
-            groupedProducts.forEach { product ->
-                groupedProductList.add(CustomProduct(product.key, product.value))
-            }
-
-            // Emit our data to the UI
-            emit(Resource.Success(groupedProductList))
-
-        } catch (e: HttpException) {
-            emit(
-                Resource.Failure(message = "Oops, something went wrong!")
-            )
-
-        } catch (e: IOException) {
-            emit(
-                Resource.Failure(message = "Couldn't reach server, check your internet connection!")
-            )
-        }
-    }
-
-/*    private fun getAllProducts() {
+    private fun getAllProducts() {
         viewModelScope.launch {
             repository.getProducts().collect { result ->
                 _prod.postValue(result)
@@ -100,25 +52,36 @@ class MainViewModel @Inject constructor(private val repository: MainRepository) 
                     customProduct.products.forEach { product ->
                         productsList.add(product.productName)
                         statesList.add(product.address.state)
+                        addresses.add(product.address)
                     }
                 }
-
-                // grouping cities by state
-                val groupedAddressList = ArrayList<CustomAddress>()
-                val groupedAddress = result.data
-
-
-
-                groupedProducts.forEach { product ->
-                    groupedProductList.add(CustomProduct(product.key, product.value))
-                }product.address.state.groupBy { state ->
-
-                }
-
 
                 _spinnerProducts.value = productsList.distinct()
                 _spinnerStates.value = statesList.distinct()
             }
         }
-    }*/
+    }
+
+    fun citiesSpinner(state: String?) {
+        val citiesList = mutableListOf("City")
+        val groupedAddressesList = ArrayList<CustomAddress>()
+
+        val groupedStates = addresses.groupBy {
+            it.state
+        }
+
+        groupedStates.forEach { address ->
+            groupedAddressesList.add(CustomAddress(address.key, address.value))
+        }
+
+        groupedAddressesList.forEach { customAddress ->
+            if (customAddress.stateName == state) {
+                customAddress.cities.forEach { city ->
+                    citiesList.add(city.city)
+                }
+            }
+        }
+
+        _spinnerCities.value = citiesList.distinct()
+    }
 }

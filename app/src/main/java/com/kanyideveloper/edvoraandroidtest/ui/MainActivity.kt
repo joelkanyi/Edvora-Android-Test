@@ -33,49 +33,55 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Make the statusbar dark and make the text white
         window.statusBarColor = ContextCompat.getColor(this@MainActivity, R.color.main_dark)
-        // set status background black
         val decorView: View = window.decorView
-        //set status text  light
         decorView.systemUiVisibility =
             decorView.systemUiVisibility and View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv()
 
+        // Invoke the observer
         setUpObserver()
 
+        binding.filters.setOnClickListener {
+            binding.filterCard.isVisible = !binding.filterCard.isVisible
+        }
+
+        // Products Spinner
         viewModel.spinnerProducts.observe(this, Observer { products ->
             Timber.d(products.toString())
-            val arrayAdapter: ArrayAdapter<String> = ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, products)
+            val arrayAdapter: ArrayAdapter<String> =
+                ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, products)
             arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             binding.productsSpinner.adapter = arrayAdapter
+
         })
 
+        // States Spinner
         viewModel.spinnerStates.observe(this, Observer { states ->
             Timber.d(states.toString())
-            val arrayAdapter: ArrayAdapter<String> = ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, states)
+            val arrayAdapter: ArrayAdapter<String> =
+                ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, states)
             arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             binding.statesSpinner.adapter = arrayAdapter
         })
 
-        /*viewModel.spinnerProducts.observe(this, Observer { products ->
-            Timber.d(products.toString())
-            val arrayAdapter: ArrayAdapter<String> = ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, products)
+        // Cities Spinner
+        viewModel.spinnerCities.observe(this, Observer { cities ->
+            Timber.d(cities.toString())
+            val arrayAdapter: ArrayAdapter<String> =
+                ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, cities)
             arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            binding.productsSpinner.adapter = arrayAdapter
-        })*/
+            binding.citiesSpinner.adapter = arrayAdapter
+        })
 
-        binding.statesSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+        // Listen for selected state so as to update the Cities Spinner accordingly
+        binding.statesSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-
+                viewModel.citiesSpinner(binding.statesSpinner.selectedItem.toString())
+                binding.filterCard.isVisible = false
             }
 
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-                
-            }
-
-        }
-
-        binding.filters.setOnClickListener {
-            binding.filterCard.isVisible = !binding.filterCard.isVisible
+            override fun onNothingSelected(p0: AdapterView<*>?) {}
         }
     }
 
