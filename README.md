@@ -34,6 +34,7 @@ These are the app's screenshots:
 
 ## Demo
 
+https://user-images.githubusercontent.com/50293753/146783624-bd19fd6c-27ae-4959-a308-578db6cfd4ac.mp4
 
 ## Project characteristics
 This project brings to table set of best practices, tools, and solutions:
