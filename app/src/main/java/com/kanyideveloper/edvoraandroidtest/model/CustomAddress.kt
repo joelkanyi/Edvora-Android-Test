@@ -1,4 +1,6 @@
 package com.kanyideveloper.edvoraandroidtest.model
 
-class CustomAddress {
-}
+data class CustomAddress (
+    val stateName: String,
+    val cities: List<Address>
+)

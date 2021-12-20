@@ -1,3 +1,5 @@
 package com.kanyideveloper.edvoraandroidtest.model
 
-data class City()
+data class City(
+    val city: String
+)
